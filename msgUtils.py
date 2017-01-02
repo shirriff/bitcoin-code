@@ -13,12 +13,12 @@ magic = 0xd9b4bef9
 
 def makeMessage(magic, command, payload):
     checksum = hashlib.sha256(hashlib.sha256(payload).digest()).digest()[0:4]
-    return struct.pack('L12sL4s', magic, command, len(payload), checksum) + payload
+    return struct.pack('<L12sL4s', magic, command, len(payload), checksum) + payload
 
 addrCount = 0 
 def processChunk(header, payload):
     """ Processes a response from a peer."""
-    magic, cmd, payload_len, checksum = struct.unpack('L12sL4s', header)
+    magic, cmd, payload_len, checksum = struct.unpack('<L12sL4s', header)
     if len(payload) != payload_len:
         print 'BAD PAYLOAD LENGTH', len(payload), payload_len
         
